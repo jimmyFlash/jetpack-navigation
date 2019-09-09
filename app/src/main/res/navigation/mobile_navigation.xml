@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    * <navigation> is the root node of every navigation graph.
+    * <navigation> contains one or more destinations, represented by <activity> or <fragment> elements.
+    * app:startDestination is an attribute that specifies the destination that is launched by default when the user
+     first opens the app.
+ -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            app:startDestination="@+id/home_dest">
+
+    <!--
+        - android:id defines an ID for the fragment that you can use to reference the destination elsewhere in this XML and your code.
+        - android:name declares the fully qualified class name of the fragment to instantiate when you navigate to that destination.
+        - tools:layout specifies what layout should be shown in the graphical editor.
+
+        * Some <fragment> tags also contain <action>, <argument>, and <deepLink>
+    -->
+    <fragment
+        android:id="@+id/home_dest"
+        android:name="com.jimmy.navigationarchcomponent.views.main.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/home_fragment">
+
+        <action android:id="@+id/next_action"
+                app:destination="@id/flow_step_one_dest"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/flow_step_one_dest"
+        android:name="com.jimmy.navigationarchcomponent.views.flow.FlowStepFragment"
+        tools:layout="@layout/flow_step_one_fragment">
+
+        <!--Using the <argument> tag, safeargs generates a class called FlowStepFragmentArgs.-->
+        <argument
+            android:name="flowStepNumber"
+            app:argType="integer"
+            android:defaultValue="1"/>
+
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/flow_step_two_dest">
+        </action>
+    </fragment>
+
+    <fragment
+            android:id="@+id/flow_step_two_dest"
+            android:name="com.jimmy.navigationarchcomponent.views.flow.FlowStepFragment"
+            tools:layout="@layout/flow_step_one_fragment">
+
+        <argument
+                android:name="flowStepNumber"
+                app:argType="integer"
+                android:defaultValue="2"/>
+
+        <!--
+            The same ID next_action is used for the action connecting flow_step_two_dest to home_dest.
+            You can navigate using the next_action id from either flow_step_one_dest or flow_step_two_dest.
+            This is an example of how actions can provide a level of abstraction and can navigate you somewhere
+            different depending on context.
+
+            The popUpTo attribute is used - this action will pop fragments off of the back-stack until you reach home_dest
+        -->
+        <action
+                android:id="@+id/next_action"
+                app:popUpTo="@id/home_dest">
+        </action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/deeplink_dest"
+        android:name="com.jimmy.navigationarchcomponent.views.deeplinks.DeepLinkFragment"
+        android:label="@string/deeplink"
+        tools:layout="@layout/deeplink_fragment">
+
+        <argument
+            android:name="myarg"
+            android:defaultValue="Android!"/>
+        <!--
+        In addition to a direct URI match, the following features are supported:
+
+        URIs without a scheme are assumed to be http and https. For example, www.example.com will match
+         http://www.example.com and https://www.example.com.
+
+        You can use placeholders in the form of {placeholder_name} to match one or more characters.
+        The String value of the placeholder is available in the arguments Bundle which has a key of the same name.
+         For example, http://www.example.com/users/{id} will match http://www.example.com/users/4.
+
+        You can use the .* wildcard to match zero or more characters.
+
+        NavController will automatically handle ACTION_VIEW intents and look for matching deep links.
+
+        -->
+        <!-- Add a deep link to www.example.com/{myarg}/ -->
+        <deepLink app:uri="www.example.com/{myarg}" />
+
+    </fragment>
+
+    <fragment android:id="@+id/settings_dest"
+              android:name="com.jimmy.navigationarchcomponent.views.settings.SettingsFragment"
+              android:label="@string/settings"
+              tools:layout="@layout/settings_fragment"/>
+
+</navigation>

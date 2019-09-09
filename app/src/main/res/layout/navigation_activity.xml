@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.main.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+
+        <!--
+         android:name="androidx.navigation.fragment.NavHostFragment" and app:defaultNavHost="true"
+         connect the system back button to the NavHostFragment
+         app:navGraph="@navigation/mobile_navigation" associates the NavHostFragment with a navigation graph.
+         This navigation graph specifies all the destinations the user can navigate to, in this NavHostFragment.
+        -->
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+            <fragment
+                    android:id="@+id/my_nav_host_fragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/mobile_navigation" />
+
+            <!--READ THIS : MATERIAL DESIGN GUIDELINES
+                The layout navigation_activity.xml (h470dp) will be used on phones in portrait mode.
+                This layout does not include the navigation drawer and instead includes the bottom navigation,
+                which is why you should open the app in split screen to see the navigation drawer.
+                The reason there is not a layout with both a navigation drawer and bottom navigation
+                is because Material Design guidelines cautions against this
+             -->
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_nav_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:menu="@menu/bottom_nav_menu"
+                    android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/nav_drawer_menu" />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
